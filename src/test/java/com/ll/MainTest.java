@@ -1,5 +1,6 @@
 package com.ll;
 
+import com.ll.lab.SampleEnum;
 import org.junit.jupiter.api.Test;
 
 public class MainTest {
