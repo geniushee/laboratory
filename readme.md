@@ -2,7 +2,8 @@
 ---------
 
 - DataStructure
-  1. Heap
+  1. arrays (mutable array with automatic resizing)
+  2. Heap
 
 - Lab
   - GenericType

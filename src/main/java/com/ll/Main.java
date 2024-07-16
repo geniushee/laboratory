@@ -2,10 +2,11 @@ package com.ll;
 
 
 import com.ll.dataStructure.Heap;
+import com.ll.dataStructure.arrays.ArrayWithPointer;
 
 public class Main {
-    public static void main(String[] args){
-        heapTest();
+    public static void main(String[] args) throws InterruptedException {
+        arrTest();
     }
 
     public static void heapTest(){
@@ -29,5 +30,9 @@ public class Main {
         System.out.println(heap.toString());
         System.out.println(heap.extractMin());
         System.out.println(heap.toString());
+    }
+
+    public static void arrTest() throws InterruptedException {
+        ArrayWithPointer.practice1();
     }
 }
