@@ -5,7 +5,7 @@ import com.ll.dataStructure.Heap;
 import com.ll.dataStructure.arrays.ArrayWithPointer;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
         arrTest();
     }
 
@@ -32,7 +32,8 @@ public class Main {
         System.out.println(heap.toString());
     }
 
-    public static void arrTest() throws InterruptedException {
-        ArrayWithPointer.practice1();
+    public static void arrTest() throws Exception {
+//        ArrayWithPointer.practice1();
+        ArrayWithPointer.practice2();
     }
 }
