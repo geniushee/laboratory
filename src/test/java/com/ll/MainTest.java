@@ -12,7 +12,7 @@ import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.util.function.Consumer;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 
 public class MainTest {
@@ -63,19 +63,41 @@ public class MainTest {
     @DisplayName("LinkedList test")
     public void linkedListTest() throws Exception {
         MyLinkedList<Integer> myll = new MyLinkedList<>();
+        // size 0 체크
         assertThat(myll.size()).as("How long myll is").isEqualTo(0);
         assertThat(myll.isEmpty()).as("myll is empty?").isTrue();
+
+        // pushFront 체크
         myll.pushFront(100);
         assertThat(myll.isEmpty()).as("myll is empty?").isFalse();
-        assertThat(myll.size()).as("How long myll is").isEqualTo(1);
-        assertThat(myll.value_at(0)).as("check myll value").isEqualTo(100);
+        assertThat(myll.size()).as("How long myll is?").isEqualTo(1);
+        assertThat(myll.value_at(0)).as("check myll value").isEqualTo(100)
+                .as("Is head equal tail?").isEqualTo(myll.back());
 
         for (int i = 2; i < 5; i++) {
             myll.pushFront(i * 100);
         }
         assertThat(myll.size()).as("How long myll is").isEqualTo(4);
         assertThat(myll.popFront()).as("check myll value").isEqualTo(400);
+        assertThat(myll.back()).as("Isn't tailvalue changed?").isEqualTo(100);
         assertThat(myll.size()).as("How long myll is").isEqualTo(3);
+
+        // pushBack 체크
+        myll.pushBack(90);
+        assertThat(myll.back()).as("check myll tailvalue").isEqualTo(90);
+
+        // popBack 체크
+        assertThat(myll.popBack()).as("check myll popBack()").isEqualTo(90);
+        assertThat(myll.back()).as("Is tailvalue changed").isEqualTo(100);
+        assertThat(myll.size()).as("How long myll is").isEqualTo(3);
+
+        // insert(index, value) 체크
+        myll.insert(2, 50);
+        Integer[] checklist = new Integer[]{300,200,50,100};
+        for(int i = 0;i < myll.size();i++){
+            assertThat(myll.value_at(i)).as("Asc values check").isEqualTo(checklist[i]);
+        }
+
 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         bw.write(descriptionBuilder.toString());

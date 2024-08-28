@@ -1,9 +1,17 @@
 package com.ll.dataStructure;
 
 public class MyLinkedList<T> {
-    LinkedNode<T> head = null;
-    LinkedNode<T> tail = null;
-    int size = 0;
+    private LinkedNode<T> head = null;
+    private LinkedNode<T> tail = null;
+    private int size = 0;
+
+    public T front() {
+        return head.value != null ? head.value : null;
+    }
+
+    public T back() {
+        return tail.value != null ? tail.value : null;
+    }
 
     public int size() {
         return size;
@@ -11,6 +19,53 @@ public class MyLinkedList<T> {
 
     public boolean isEmpty() {
         return size == 0;
+    }
+
+    public void insert(int index, T value) {
+        if (index < 0 || index >= size) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+
+        if (isEmpty()) {
+            pushFront(value);
+        } else {
+            LinkedNode<T> ln = head.value_at(index);
+            LinkedNode<T> temp = new LinkedNode<>(ln, ln.prev, value);
+            ln.prev.next =  temp;
+            ln.prev = temp;
+        }
+
+        size++;
+    }
+
+    public T popBack() {
+        if (isEmpty()) {
+            return null;
+        }
+
+        T value = tail.value;
+        ;
+        if (size == 1) {
+            head = null;
+            tail = null;
+        } else {
+            tail = tail.prev;
+        }
+
+        size--;
+        return value;
+    }
+
+    public void pushBack(T value) {
+        if (isEmpty()) {
+            LinkedNode<T> ln = new LinkedNode<>(value);
+            head = ln;
+            tail = ln;
+        } else {
+            tail = new LinkedNode<>(null, tail, value);
+            tail.prev.next = tail;
+        }
+        size++;
     }
 
     public T value_at(int index) {
@@ -25,15 +80,18 @@ public class MyLinkedList<T> {
         return head.value_at(index).value;
     }
 
-
-
-    public T popFront(){
-        if(isEmpty()){
+    public T popFront() {
+        if (isEmpty()) {
             return null;
         }
-
         T value = head.value;
-        head = head.next;
+
+        if (size == 1) {
+            head = null;
+            tail = null;
+        } else {
+            head = head.next;
+        }
         size--;
         return value;
     }
@@ -41,23 +99,28 @@ public class MyLinkedList<T> {
 
     public void pushFront(T value) {
         if (isEmpty()) {
-            head = new LinkedNode<>(value);
+            LinkedNode<T> ln = new LinkedNode<>(value);
+            head = ln;
+            tail = ln;
         } else {
-            head = new LinkedNode<>(head, value);
+            head = new LinkedNode<>(head, null, value);
+            head.next.prev = head;
         }
         size++;
     }
 
     private static class LinkedNode<T> {
         LinkedNode<T> next;
+        LinkedNode<T> prev;
         T value;
 
         private LinkedNode(T value) {
-            this(null, value);
+            this(null, null, value);
         }
 
-        private LinkedNode(LinkedNode<T> next, T value) {
+        private LinkedNode(LinkedNode<T> next, LinkedNode<T> prev, T value) {
             this.next = next;
+            this.prev = prev;
             this.value = value;
         }
 
