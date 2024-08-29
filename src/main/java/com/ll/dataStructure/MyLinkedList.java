@@ -21,6 +21,63 @@ public class MyLinkedList<T> {
         return size == 0;
     }
 
+    public void removeValue(T value) {
+        if (isEmpty()) {
+            return;
+        }
+        LinkedNode<T> temp = head;
+        int i = 0;
+        while (i < size) {
+            if (temp.value.equals(value)) {
+                erase(i);
+                return ;
+            }
+            i++;
+            temp = temp.next;
+        }
+    }
+
+    public void reverse() {
+        LinkedNode<T> node = tail;
+        while (!node.equals(head)) {
+            node.swap();
+            node = node.next;
+        }
+        head = tail;
+        tail = node;
+    }
+
+    public T valueFromEnd(int nth) {
+        if (nth < 0 || nth >= size) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+
+        if (isEmpty()) {
+            return null;
+        }
+
+        return tail.valueFromEnd(nth).value;
+    }
+
+    public void erase(int index) {
+        if (index < 0 || index >= size) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+
+        LinkedNode<T> temp = head.value_at(index);
+        if (index == 0) {
+            temp.next.prev = null;
+            head = temp.next;
+        } else if (index == size - 1) {
+            temp.prev.next = null;
+            tail = temp.prev;
+        } else {
+            temp.prev.next = temp.next;
+            temp.next.prev = temp.prev;
+        }
+        size--;
+    }
+
     public void insert(int index, T value) {
         if (index < 0 || index >= size) {
             throw new ArrayIndexOutOfBoundsException();
@@ -31,7 +88,7 @@ public class MyLinkedList<T> {
         } else {
             LinkedNode<T> ln = head.value_at(index);
             LinkedNode<T> temp = new LinkedNode<>(ln, ln.prev, value);
-            ln.prev.next =  temp;
+            ln.prev.next = temp;
             ln.prev = temp;
         }
 
@@ -124,12 +181,26 @@ public class MyLinkedList<T> {
             this.value = value;
         }
 
-        public LinkedNode<T> value_at(int index) {
+        private LinkedNode<T> value_at(int index) {
             if (index == 0) {
                 return this;
             }
 
             return next.value_at(index - 1);
+        }
+
+        private LinkedNode<T> valueFromEnd(int nth) {
+            if (nth == 0) {
+                return this;
+            }
+
+            return prev.valueFromEnd(nth - 1);
+        }
+
+        private void swap() {
+            LinkedNode<T> t = this.next;
+            this.next = this.prev;
+            this.prev = t;
         }
     }
 }
