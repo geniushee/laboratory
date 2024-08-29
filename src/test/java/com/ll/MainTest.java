@@ -123,6 +123,7 @@ public class MainTest {
         checklist = new Integer[]{100,200,300};
         for(int i = 0; i < myll.size(); i++){
             assertThat(myll.value_at(i)).as("check each value in myll - index : "+i).isEqualTo(checklist[i]);
+            assertThat(myll.valueFromEnd(i)).as("check each value in myll - index : "+i).isEqualTo(checklist[2-i]);
         }
         assertThat(myll.front()).as("check head value").isEqualTo(100);
         assertThat(myll.back()).as("check tail value").isEqualTo(300);

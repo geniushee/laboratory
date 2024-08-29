@@ -38,13 +38,19 @@ public class MyLinkedList<T> {
     }
 
     public void reverse() {
+        int i = 0;
         LinkedNode<T> node = tail;
-        while (!node.equals(head)) {
+        while (true) {
             node.swap();
+            i++;
+            if(i == size){
+                break;
+            }
             node = node.next;
         }
-        head = tail;
+        LinkedNode<T> temp = tail;
         tail = node;
+        head = temp;
     }
 
     public T valueFromEnd(int nth) {
@@ -107,8 +113,8 @@ public class MyLinkedList<T> {
             tail = null;
         } else {
             tail = tail.prev;
+            tail.next = null;
         }
-
         size--;
         return value;
     }
@@ -148,6 +154,7 @@ public class MyLinkedList<T> {
             tail = null;
         } else {
             head = head.next;
+            head.prev = null;
         }
         size--;
         return value;
