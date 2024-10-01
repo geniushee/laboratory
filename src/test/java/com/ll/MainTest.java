@@ -2,6 +2,7 @@ package com.ll;
 
 import com.ll.dataStructure.Heap;
 import com.ll.dataStructure.MyLinkedList;
+import com.ll.dataStructure.queue.QueueList;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.description.Description;
 import org.junit.jupiter.api.AfterEach;
@@ -20,14 +21,14 @@ public class MainTest {
     int num = 0;
 
     @BeforeEach
-    public void setAssertionDescriptions(){
+    public void setAssertionDescriptions() {
         descriptionBuilder = new StringBuilder(String.format("Assertion:%n"));
-        Consumer<Description> descriptionConsumer = desc -> descriptionBuilder.append(String.format("%d. %s%n",num++, desc));
+        Consumer<Description> descriptionConsumer = desc -> descriptionBuilder.append(String.format("%d. %s%n", num++, desc));
         Assertions.setDescriptionConsumer(descriptionConsumer);
     }
 
     @AfterEach
-    public void showTestReport(){
+    public void showTestReport() {
         // 버퍼쓰기가 유리한 경우
         // 대량의 데이터를 출력하거나 복잡한 파일 입출력이 필요한 경우.
         //성능이 매우 중요한 애플리케이션에서, 빈번한 출력 작업을 최적화하려는 경우.
@@ -104,8 +105,8 @@ public class MainTest {
 
         // insert(index, value) 체크
         myll.insert(2, 50);
-        Integer[] checklist = new Integer[]{300,200,50,100};
-        for(int i = 0;i < myll.size();i++){
+        Integer[] checklist = new Integer[]{300, 200, 50, 100};
+        for (int i = 0; i < myll.size(); i++) {
             assertThat(myll.value_at(i)).as("Asc values check").isEqualTo(checklist[i]);
         }
 
@@ -120,10 +121,10 @@ public class MainTest {
 
         //reverse() 체크
         myll.reverse();
-        checklist = new Integer[]{100,200,300};
-        for(int i = 0; i < myll.size(); i++){
-            assertThat(myll.value_at(i)).as("check each value in myll - index : "+i).isEqualTo(checklist[i]);
-            assertThat(myll.valueFromEnd(i)).as("check each value in myll - index : "+i).isEqualTo(checklist[2-i]);
+        checklist = new Integer[]{100, 200, 300};
+        for (int i = 0; i < myll.size(); i++) {
+            assertThat(myll.value_at(i)).as("check each value in myll - index : " + i).isEqualTo(checklist[i]);
+            assertThat(myll.valueFromEnd(i)).as("check each value in myll - index : " + i).isEqualTo(checklist[2 - i]);
         }
         assertThat(myll.front()).as("check head value").isEqualTo(100);
         assertThat(myll.back()).as("check tail value").isEqualTo(300);
@@ -133,5 +134,22 @@ public class MainTest {
         assertThat(myll.size()).as("How long myll is").isEqualTo(2);
         assertThat(myll.front()).as("check head value").isEqualTo(100);
         assertThat(myll.back()).as("check tail value").isEqualTo(200);
+    }
+
+    @Test
+    @DisplayName("QueueList Test")
+    public void testQueueList() {
+        QueueList ql = new QueueList();
+
+        for (int i = 0; i < 5; i++) {
+            ql.enqueue(i);
+        }
+        assertThat(ql.empty()).as("queue is not empty?").isFalse();
+        descriptionBuilder.append("----check FIFO----\n");
+        int i = 0;
+        while(!ql.empty()){
+            assertThat(ql.dequeue()).as("orderly check value : " + i).isEqualTo(i++);
+        }
+        assertThat(ql.empty()).as("queue is empty?").isTrue();
     }
 }
