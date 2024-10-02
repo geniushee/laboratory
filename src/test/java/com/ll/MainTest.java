@@ -2,6 +2,7 @@ package com.ll;
 
 import com.ll.dataStructure.Heap;
 import com.ll.dataStructure.MyLinkedList;
+import com.ll.dataStructure.queue.QueueArray;
 import com.ll.dataStructure.queue.QueueList;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.description.Description;
@@ -147,9 +148,59 @@ public class MainTest {
         assertThat(ql.empty()).as("queue is not empty?").isFalse();
         descriptionBuilder.append("----check FIFO----\n");
         int i = 0;
-        while(!ql.empty()){
+        while (!ql.empty()) {
             assertThat(ql.dequeue()).as("orderly check value : " + i).isEqualTo(i++);
         }
         assertThat(ql.empty()).as("queue is empty?").isTrue();
+    }
+
+    @Test
+    @DisplayName("QueueArray Test")
+    public void testQueueArray() {
+        QueueArray qa1 = new QueueArray(5);
+        for (int i = 0; i < 6; i++) {
+            try{
+                qa1.enqueue(i);
+            }catch (IllegalArgumentException e){
+                descriptionBuilder.append("error : ").append(e.getMessage()).append("\n");
+            }
+        }
+        descriptionBuilder.append("qa1 확인 : ").append(qa1.toString()).append("\n");
+
+        QueueArray qa2 = new QueueArray(5);
+        for (int i = 0; i < 8; i++) {
+            qa2.enqueue(i, true);
+        }
+        descriptionBuilder.append("qa2 확인 : ").append(qa2.toString()).append("\n");
+
+        for (int i = 0; i < 3; i++) {
+            Integer q1 = qa1.dequeue();
+            assertThat(q1).as("dequeue 확인 : " + q1).isEqualTo(i);
+            Integer q2 = qa2.dequeue();
+            assertThat(q2).as("dequeue 확인 : " + q2).isEqualTo(3 + i);
+        }
+
+        descriptionBuilder.append("qa1 확인 : ").append(qa1.toString()).append("\n");
+        descriptionBuilder.append("qa2 확인 : ").append(qa2.toString()).append("\n");
+
+        for (int i = 0; i < 2; i++) {
+            Integer q1 = qa1.dequeue();
+            Integer q2 = qa2.dequeue();
+        }
+
+        assertThat(qa1.empty()).as("qa1 empty?").isTrue();
+        assertThat(qa2.empty()).as("qa2 empty?").isTrue();
+
+        descriptionBuilder.append("qa1 확인 : ").append(qa1.toString()).append("\n");
+        descriptionBuilder.append("qa2 확인 : ").append(qa2.toString()).append("\n");
+
+        for (int i = 0; i < 2; i++) {
+            qa1.enqueue(3+i);
+            qa2.enqueue(4+i);
+        }
+
+        descriptionBuilder.append("qa1 확인 : ").append(qa1.toString()).append("\n");
+        descriptionBuilder.append("qa2 확인 : ").append(qa2.toString()).append("\n");
+
     }
 }
