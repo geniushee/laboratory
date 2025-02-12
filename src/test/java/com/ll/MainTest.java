@@ -1,6 +1,7 @@
 package com.ll;
 
 import com.ll.dataStructure.Heap;
+import com.ll.dataStructure.LinearProbingHash;
 import com.ll.dataStructure.MyLinkedList;
 import com.ll.dataStructure.queue.QueueArray;
 import com.ll.dataStructure.queue.QueueList;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 public class MainTest {
@@ -159,9 +161,9 @@ public class MainTest {
     public void testQueueArray() {
         QueueArray qa1 = new QueueArray(5);
         for (int i = 0; i < 6; i++) {
-            try{
+            try {
                 qa1.enqueue(i);
-            }catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 descriptionBuilder.append("error : ").append(e.getMessage()).append("\n");
             }
         }
@@ -195,12 +197,67 @@ public class MainTest {
         descriptionBuilder.append("qa2 확인 : ").append(qa2.toString()).append("\n");
 
         for (int i = 0; i < 2; i++) {
-            qa1.enqueue(3+i);
-            qa2.enqueue(4+i);
+            qa1.enqueue(3 + i);
+            qa2.enqueue(4 + i);
         }
 
         descriptionBuilder.append("qa1 확인 : ").append(qa1.toString()).append("\n");
         descriptionBuilder.append("qa2 확인 : ").append(qa2.toString()).append("\n");
 
+    }
+
+    @DisplayName("LinearProbing test")
+    @Test
+    public void testLinearProbing() {
+        int[] keys = new int[]{34, 323, 567, 29, 10, 38, 83, 20, 34};
+        String[] values = new String[]{"Hi", "Hellow", "World", "what", "where", "when", "crystal", "red", "yellow"};
+
+        LinearProbingHash<String> table = new LinearProbingHash<>(13);
+
+        //add
+        for (int i = 0; i < keys.length; i++) {
+            table.add(keys[i], values[i]);
+        }
+
+        //get
+        for (int i = 0; i < keys.length; i++) {
+            if (keys[i] == 34) {
+                assertThat(table.get(keys[i])).as("각 키별로 값이 일치하는지 확인").isEqualTo("yellow");
+            } else {
+                assertThat(table.get(keys[i])).as("각 키별로 값이 일치하는지 확인").isEqualTo(values[i]);
+            }
+        }
+
+        //remove
+        int[] removeList = new int[]{10, 29, 83};
+        for (int k : removeList) {
+            table.remove(k);
+        }
+        for (int j : removeList) {
+            assertThat(table.get(j)).as("삭제됐는지 확인").isNull();
+        }
+
+        int[] newKeys = new int[]{54, 38, 12, 90};
+        String[] newValues = new String[]{"no", "ahahahah", "stop", "bus"};
+        for (int i = 0; i < newKeys.length; i++) {
+            table.add(newKeys[i], newValues[i]);
+        }
+
+        int[] lastKey = new int[]{323, 567, 20, 34, 54, 38, 12, 90};
+        String[] lastValue = new String[]{"Hellow", "World", "red", "yellow", "no", "ahahahah", "stop", "bus"};
+        //get
+        for (int i = 0; i < lastKey.length; i++) {
+            assertThat(table.get(lastKey[i])).as("각 키별로 값이 일치하는지 마지막 확인").isEqualTo(lastValue[i]);
+        }
+
+        for(int i = 0; i < 6; i++){
+            if(i == 5){
+                assertThatThrownBy(() -> table.add(5, String.valueOf(5)))
+                        .as("꽉차서 에러가 발생하는지 확인").isInstanceOf(ArrayIndexOutOfBoundsException.class)
+                        .hasMessageContaining("It is full");
+            }else{
+                table.add(i, String.valueOf(i));
+            }
+        }
     }
 }
