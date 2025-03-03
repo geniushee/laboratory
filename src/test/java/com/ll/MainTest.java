@@ -1,5 +1,6 @@
 package com.ll;
 
+import com.ll.dataStructure.BinarySearch;
 import com.ll.dataStructure.Heap;
 import com.ll.dataStructure.LinearProbingHash;
 import com.ll.dataStructure.MyLinkedList;
@@ -259,5 +260,28 @@ public class MainTest {
                 table.add(i, String.valueOf(i));
             }
         }
+    }
+
+    @Test
+    @DisplayName("이진탐색 테스트1")
+    public void BinarySearchTest1(){
+        int[] array = new int[20];
+        for(int i = 1; i < 21; i++){
+            array[i-1] = i;
+        }
+        BinarySearch binarySearch = new BinarySearch(array);
+
+        assertThat(binarySearch.search(5)).as("탐색결과 확인").isEqualTo(4);
+    }
+    @Test
+    @DisplayName("이진탐색 테스트2")
+    public void BinarySearchTest2(){
+        int[] array = new int[2];
+        for(int i = 0; i < 2; i++){
+            array[i] = i;
+        }
+        BinarySearch binarySearch = new BinarySearch(array);
+
+        assertThat(binarySearch.search(0)).as("탐색결과 확인").isEqualTo(0);
     }
 }
